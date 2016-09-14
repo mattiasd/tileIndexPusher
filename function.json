@@ -1,0 +1,12 @@
+{
+  "bindings": [
+    {
+      "name": "tileindexresultsetsBlobs",
+      "type": "blobTrigger",
+      "direction": "in",
+      "path": "tileindexresultsets",
+      "connection": "rhomlocations_STORAGE"
+    }
+  ],
+  "disabled": false
+}
