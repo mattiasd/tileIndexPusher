@@ -55,8 +55,9 @@ function pushResultSets(resultSets, callback) {
 }
 
 module.exports = function(context, resultSetBlob) {
-    context.log('processing resultSet blob:', resultSetBlob.length);
-
     let resultSets = resultSetBlob.split('\n');
-    pushResultSets(resultSets, context.done);
+    pushResultSets(resultSets, err => {
+        context.log('err: ' + err);
+        context.done();
+    });
 };
