@@ -21,7 +21,6 @@ function pushResultSet(resultSetText, callback) {
     try {
         resultSet = JSON.parse(resultSetText);
     } catch(e) {
-        console.error('skipping resultset that doesnt parse');
         return callback();
     }
 
@@ -55,10 +54,8 @@ function pushResultSets(resultSets, callback) {
 }
 
 module.exports = function(context, resultSetBlob) {
-    console.log('this is a log message.');
     let resultSets = resultSetBlob.split('\n');
     pushResultSets(resultSets, err => {
-        console.log('err: ' + err);
         context.log('err: ' + err);
         context.done();
     });
