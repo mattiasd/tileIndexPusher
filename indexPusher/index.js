@@ -57,6 +57,6 @@ module.exports = function(context, resultSetBlob) {
     let resultSets = resultSetBlob.split('\n');
     pushResultSets(resultSets, err => {
         context.log('err: ' + err);
-        context.done();
+        context.done(err);
     });
 };
