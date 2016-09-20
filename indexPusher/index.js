@@ -73,6 +73,7 @@ function pushResultSets(resultSets, callback) {
 }
 
 module.exports = function(context, resultSetBlob) {
+    context.log(JSON.stringify(context));
     functionsContext = context;
     let resultSets = resultSetBlob.split('\n');
     pushResultSets(resultSets, err => {
