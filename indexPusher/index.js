@@ -11,6 +11,7 @@ let azureStorageEndpoint = process.env.LOCATION_STORAGE_ACCOUNT + ".blob.core.wi
 let totalAttempts = 0;
 let totalFailures = 0;
 let totalSuccesses = 0;
+let functionsContext;
 
 let retryOperations = new azure.ExponentialRetryPolicyFilter();
 let blobService = azure.createBlobService(
@@ -25,7 +26,7 @@ function pushResultSet(resultSetText, callback) {
     try {
         resultSet = JSON.parse(resultSetText);
     } catch(e) {
-        console.log('failed to parse (skipping): ' + resultSetText);
+        functionsContext.log('failed to parse (skipping): ' + resultSetText);
         return callback();
     }
 
@@ -52,7 +53,7 @@ function pushResultSet(resultSetText, callback) {
                totalAttempts += 1;
 
                if (totalAttempts % 50 === 0) {
-                   console.log(`${totalAttempts}: ${totalSuccesses}/${totalFailures}`);
+                   functionsContext.log(`${totalAttempts}: ${totalSuccesses}/${totalFailures}`);
                }
                createBlobCallback();
            });
@@ -72,6 +73,7 @@ function pushResultSets(resultSets, callback) {
 }
 
 module.exports = function(context, resultSetBlob) {
+    functionsContext = context;
     let resultSets = resultSetBlob.split('\n');
     pushResultSets(resultSets, err => {
         context.log('blob length: ' + resultSetBlob.length);
