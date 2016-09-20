@@ -21,6 +21,8 @@ let blobService = azure.createBlobService(
 ).withFilter(retryOperations);
 
 function pushResultSet(resultSetText, callback) {
+    if (resultSetText.trim().length === 0) return callback();
+
     let successful = false;
     let resultSet;
     try {
