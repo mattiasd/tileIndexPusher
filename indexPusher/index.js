@@ -4,7 +4,7 @@ const async = require('async'),
       azure = require('azure-storage');
 
 const TILE_INDEX_CONTAINER = 'tileindexes2';
-const PUSH_PARALLELISM = process.env.PUSH_PARALLELISM || 5;
+const PUSH_PARALLELISM = process.env.PUSH_PARALLELISM || 50;
 
 let azureStorageEndpoint = process.env.LOCATION_STORAGE_ACCOUNT + ".blob.core.windows.net";
 
@@ -73,7 +73,7 @@ function pushResultSets(resultSets, callback) {
 }
 
 module.exports = function(context, resultSetBlob) {
-    context.log(JSON.stringify(context));
+    context.log(Object.keys(context));
     functionsContext = context;
     let resultSets = resultSetBlob.split('\n');
     pushResultSets(resultSets, err => {
