@@ -21,7 +21,7 @@ function pushResultSet(resultSetText, callback) {
     try {
         resultSet = JSON.parse(resultSetText);
     } catch(e) {
-        return callback();
+        return callback(e);
     }
 
     async.whilst(
