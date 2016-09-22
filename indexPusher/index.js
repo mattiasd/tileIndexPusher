@@ -8,17 +8,11 @@ const PUSH_PARALLELISM = process.env.PUSH_PARALLELISM || 10;
 
 let azureStorageEndpoint = process.env.LOCATION_STORAGE_ACCOUNT + ".blob.core.windows.net";
 
-let totalAttempts = 0;
-let totalFailures = 0;
-let totalSuccesses = 0;
-let functionsContext;
-
-let retryOperations = new azure.ExponentialRetryPolicyFilter();
 let blobService = azure.createBlobService(
     process.env.LOCATION_STORAGE_ACCOUNT,
     process.env.LOCATION_STORAGE_KEY,
     azureStorageEndpoint
-).withFilter(retryOperations);
+).withFilter(new azure.ExponentialRetryPolicyFilter());
 
 function pushResultSet(resultSetText, callback) {
     if (resultSetText.trim().length === 0) return callback();
@@ -28,7 +22,6 @@ function pushResultSet(resultSetText, callback) {
     try {
         resultSet = JSON.parse(resultSetText);
     } catch(e) {
-        functionsContext.log('failed to parse (skipping): ' + resultSetText);
         return callback();
     }
 
@@ -46,17 +39,9 @@ function pushResultSet(resultSetText, callback) {
                }
 
                if (!err) {
-                   totalSuccesses += 1;
                    successful = true;
-               } else {
-                   totalFailures += 1;
-               }
+               } 
 
-               totalAttempts += 1;
-
-               if (totalAttempts % 500 === 0) {
-                   functionsContext.log(`${functionsContext.invocationId}: ${totalAttempts}: ${totalSuccesses}/${totalFailures}`);
-               }
                createBlobCallback();
            });
         },
