@@ -60,7 +60,6 @@ function pushResultSets(resultSets, callback) {
 }
 
 module.exports = function(context, resultSetBlob) {
-    functionsContext = context;
     let resultSets = resultSetBlob.split('\n');
     pushResultSets(resultSets, err => {
         context.log('blob length: ' + resultSetBlob.length);
