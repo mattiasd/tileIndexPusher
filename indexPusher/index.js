@@ -77,6 +77,8 @@ function pushResultSets(resultSets, callback) {
 module.exports = function(context, resultSetBlob) {
     functionsContext = context;
     let resultSets = resultSetBlob.split('\n');
+    if (timestamp) context.log('timestamp: ' + timestamp);
+    if (timestamp) context.log('partCount: ' + partCount);
     pushResultSets(resultSets, err => {
         context.log('blob length: ' + resultSetBlob.length);
         context.log('err: ' + err);
