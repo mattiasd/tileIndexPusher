@@ -4,7 +4,7 @@ const async = require('async'),
       azure = require('azure-storage');
 
 const TILE_INDEX_CONTAINER = 'tileindexes2';
-const PUSH_PARALLELISM = process.env.PUSH_PARALLELISM || 100;
+const PUSH_PARALLELISM = process.env.PUSH_PARALLELISM || 200;
 
 let azureStorageEndpoint = process.env.LOCATION_STORAGE_ACCOUNT + ".blob.core.windows.net";
 
